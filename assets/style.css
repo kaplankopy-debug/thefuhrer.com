@@ -1,11 +1,13 @@
 :root{
-  --bg:#0b0c0f;
-  --fg:#e9e9ee;
-  --mut:#a6a7b3;
-  --line:#2a2c36;
+  --bg:#fafafa;
+  --fg:#111111;
+  --mut:#666666;
+  --line:#dddddd;
 }
+
 *{box-sizing:border-box}
 html,body{height:100%}
+
 body{
   margin:0;
   background:var(--bg);
@@ -13,9 +15,28 @@ body{
   font:16px/1.55 ui-serif, Georgia, "Times New Roman", Times, serif;
   letter-spacing:.2px;
 }
-.wrap{max-width:720px;padding:56px 20px;margin:0 auto;}
-.top h1{margin:0;font-size:28px;letter-spacing:2px;font-weight:600;}
-.sub{margin:10px 0 26px;color:var(--mut);font-size:14px;letter-spacing:1px;text-transform:uppercase;}
+
+.wrap{
+  max-width:720px;
+  padding:56px 20px;
+  margin:0 auto;
+}
+
+.top h1{
+  margin:0;
+  font-size:28px;
+  letter-spacing:2px;
+  font-weight:600;
+}
+
+.sub{
+  margin:10px 0 26px;
+  color:var(--mut);
+  font-size:14px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
 .links{
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
@@ -24,9 +45,32 @@ body{
   flex-direction:column;
   gap:10px;
 }
-a{color:var(--fg);text-decoration:none;padding:10px 0;border-bottom:1px dotted transparent;}
-a:hover{border-bottom-color:var(--mut);color:#fff;}
-.foot{margin-top:22px;color:var(--mut);font-size:13px;}
-.disc{margin:0 0 10px;}
-.meta a{color:var(--mut);}
-.meta a:hover{color:var(--fg);}
+
+a{
+  color:var(--fg);
+  text-decoration:none;
+  padding:10px 0;
+  border-bottom:1px dotted transparent;
+}
+
+a:hover{
+  border-bottom-color:var(--mut);
+}
+
+.foot{
+  margin-top:22px;
+  color:var(--mut);
+  font-size:13px;
+}
+
+.disc{
+  margin:0 0 10px;
+}
+
+.meta a{
+  color:var(--mut);
+}
+
+.meta a:hover{
+  color:var(--fg);
+}
