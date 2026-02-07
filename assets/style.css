@@ -1,8 +1,10 @@
+/* Archive-style minimal academic aesthetic */
+
 :root{
-  --bg:#fafafa;
-  --fg:#111111;
-  --mut:#666666;
-  --line:#dddddd;
+  --bg:#fdf6dc;      /* warm paper yellow */
+  --fg:#000000;      /* pure black text */
+  --mut:#000000;
+  --line:#000000;
 }
 
 *{box-sizing:border-box}
@@ -12,55 +14,50 @@ body{
   margin:0;
   background:var(--bg);
   color:var(--fg);
-  font:16px/1.55 ui-serif, Georgia, "Times New Roman", Times, serif;
-  letter-spacing:.2px;
+  font:15px/1.45 "Times New Roman", Times, serif;
 }
 
 .wrap{
-  max-width:720px;
-  padding:56px 20px;
+  max-width:900px;
+  padding:40px 24px;
   margin:0 auto;
 }
 
 .top h1{
-  margin:0;
-  font-size:28px;
-  letter-spacing:2px;
-  font-weight:600;
+  margin:0 0 14px;
+  font-size:20px;
+  font-weight:bold;
 }
 
 .sub{
-  margin:10px 0 26px;
-  color:var(--mut);
-  font-size:14px;
-  letter-spacing:1px;
-  text-transform:uppercase;
+  margin:0 0 22px;
+  font-size:15px;
 }
 
 .links{
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  padding:18px 0;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+  padding:0;
+  display:block;
 }
 
-a{
-  color:var(--fg);
-  text-decoration:none;
-  padding:10px 0;
-  border-bottom:1px dotted transparent;
+.links a{
+  display:block;
+  margin:6px 0;
+  color:#0000ee;
+  text-decoration:underline;
+  font-size:15px;
 }
 
-a:hover{
-  border-bottom-color:var(--mut);
+.links a:visited{
+  color:#551a8b;
+}
+
+.links a:hover{
+  text-decoration:underline;
 }
 
 .foot{
-  margin-top:22px;
-  color:var(--mut);
-  font-size:13px;
+  margin-top:32px;
+  font-size:14px;
 }
 
 .disc{
@@ -68,9 +65,10 @@ a:hover{
 }
 
 .meta a{
-  color:var(--mut);
+  color:#0000ee;
+  text-decoration:underline;
 }
 
-.meta a:hover{
-  color:var(--fg);
+.meta a:visited{
+  color:#551a8b;
 }
