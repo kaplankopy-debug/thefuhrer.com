@@ -3,35 +3,84 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>thefuhrer.com — Scholarly Research Portal</title>
-  <meta name="description" content="A scholarly research portal on the Führerprinzip, Nazi governance, and primary-source based decision-making history — built for education and citation." />
-  <link rel="stylesheet" href="assets/style.css" />
+  <title>thefuhrer.com — World at War Map (1943)</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <style>
+    html, body { height: 100%; margin: 0; background:#0b0d10; }
+    #map { height: 100%; width: 100%; }
+
+    /* Minimal academic overlay */
+    .overlay {
+      position: fixed;
+      left: 14px; bottom: 14px;
+      max-width: min(520px, calc(100vw - 28px));
+      background: rgba(17,21,27,.85);
+      border: 1px solid rgba(33,42,54,.9);
+      color: #e6e8eb;
+      font: 14px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      padding: 12px 14px;
+      border-radius: 14px;
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+    }
+    .overlay .title { font-weight: 700; margin-bottom: 6px; }
+    .overlay .meta { color:#a8b0bb; font-size: 12px; line-height: 1.35; }
+    .overlay a { color:#7ab7ff; text-decoration:none; }
+    .overlay a:hover { text-decoration: underline; }
+
+    /* Leaflet tweaks for a cleaner, “archive” look */
+    .leaflet-control-attribution { background: rgba(17,21,27,.75) !important; color:#a8b0bb !important; }
+    .leaflet-control-zoom a { background: rgba(17,21,27,.85) !important; color:#e6e8eb !important; border:1px solid rgba(33,42,54,.9) !important; }
+  </style>
 </head>
+
 <body>
-  <header>
-    <div class="header-inner">
-      <div class="brand">
-        <div class="title">thefuhrer.com</div>
-        <div class="subtitle">Scholarly research portal · citation-first · non-glorifying</div>
-      </div>
-      <nav>
-        <a href="#/">Home</a>
-        <a href="#/page/editorial-policy">Editorial Policy</a>
-        <a href="#/page/methods">Methods</a>
-        <a href="#/page/primary-sources">Primary Sources Index</a>
-        <a href="#/page/corrections">Corrections</a>
-      </nav>
+  <div id="map"></div>
+
+  <div class="overlay">
+    <div class="title">The World at War (February 1943)</div>
+    <div class="meta">
+      Public-domain U.S. military map (via Wikimedia Commons). Source listing: David Rumsey Map Collection.<br/>
+      Tip: scroll to zoom, click-drag to pan.
+      <br/><br/>
+      <a href="https://commons.wikimedia.org/wiki/File:The_World_at_war,_1943.jpg" target="_blank" rel="noopener">View source</a>
     </div>
-  </header>
+  </div>
 
-  <main id="app"></main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-  <footer>
-    <div class="small">
-      Educational, scholarly, and citation-driven. This site does not endorse, glorify, or advocate extremist ideologies.
-    </div>
-  </footer>
+  <script>
+    // Image dimensions from Wikimedia Commons file info:
+    // width 3492px, height 2613px
+    const imageWidth = 3492;
+    const imageHeight = 2613;
 
-  <script src="assets/app.js"></script>
+    // Direct original image URL (hotlinked). If you prefer, download it and serve locally from /assets/.
+    const imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/29/The_World_at_war%2C_1943.jpg";
+
+    // Leaflet "simple CRS" gives us a zoomable/pannable canvas for an image.
+    const map = L.map('map', {
+      crs: L.CRS.Simple,
+      minZoom: -2,
+      maxZoom: 4,
+      zoomControl: true,
+      attributionControl: true,
+      preferCanvas: true
+    });
+
+    const bounds = [[0, 0], [imageHeight, imageWidth]];
+    L.imageOverlay(imageUrl, bounds).addTo(map);
+
+    map.fitBounds(bounds);
+
+    // Optional: prevent panning too far away from the map
+    map.setMaxBounds(bounds);
+    map.on('drag', () => map.panInsideBounds(bounds, { animate: false }));
+  </script>
 </body>
 </html>
