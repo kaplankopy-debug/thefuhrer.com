@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Archive Index</title>
+  <title>Chronological Archive Index</title>
   <style>
     :root{
       --bg:#fffbe6; /* faint yellow */
@@ -22,12 +22,8 @@
       font-size:12px;
       line-height:1.35;
     }
-    .wrap{max-width:1150px;margin:0 auto;padding:24px 18px 40px}
-    header{
-      border-bottom:1px solid var(--border);
-      padding-bottom:12px;
-      margin-bottom:14px;
-    }
+    .wrap{max-width:1200px;margin:0 auto;padding:24px 18px 40px}
+    header{border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px}
     h1{margin:0 0 6px 0;font-size:16px;font-weight:bold}
     .subtitle{margin:0;color:var(--muted)}
     .toolbar{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -48,38 +44,22 @@
     .toc-title{font-weight:bold;margin:0 0 6px 0}
     .toc a{color:var(--link);text-decoration:none}
     .toc a:hover{text-decoration:underline}
-
-    .section{
+    .year{
       margin-top:18px;
       padding-top:12px;
       border-top:1px solid var(--border);
     }
-    .section h2{
-      margin:0 0 6px 0;
-      font-size:14px;
-      font-weight:bold;
-      letter-spacing:0.2px;
-    }
-    .section .desc{margin:0 0 10px 0;color:var(--muted)}
-
+    .year h2{margin:0 0 6px 0;font-size:14px;font-weight:bold}
+    .year .desc{margin:0 0 10px 0;color:var(--muted)}
     .grid{columns:2;column-gap:34px}
     @media (max-width: 820px){ .grid{columns:1} }
     ol{margin:0;padding-left:20px}
-    li{
-      break-inside:avoid;
-      padding:2px 0;
-      border-bottom:1px dotted rgba(0,0,0,0.08);
-    }
+    li{break-inside:avoid;padding:2px 0;border-bottom:1px dotted rgba(0,0,0,0.08)}
     a{color:var(--link);text-decoration:none}
     a:hover{text-decoration:underline}
     a:visited{color:var(--visited)}
     .meta{color:var(--muted);margin-left:6px;font-size:11px}
-    footer{
-      margin-top:22px;
-      padding-top:12px;
-      border-top:1px solid var(--border);
-      color:var(--muted);
-    }
+    footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted)}
     code{font-size:11px}
   </style>
 </head>
@@ -88,94 +68,89 @@
   <div class="wrap">
     <header>
       <h1>An archive of historical documents relating to the person of Adolf Hitler</h1>
-      <p class="subtitle">Academic-style index. Placeholder links now; replace with primary/secondary sources as you curate.</p>
+      <p class="subtitle">Chronological index (year-by-year). Placeholder links now; replace URLs/titles as you curate.</p>
 
       <div class="toolbar">
-        <input id="q" type="search" placeholder="Filter across titles, tags, and URLs (e.g., speech, trial, photo, pdf, 1933)..." />
+        <input id="q" type="search" placeholder="Filter titles/tags/URLs (e.g., 1923, trial, speech, pdf, map)..." />
         <span class="count" id="count"></span>
       </div>
 
-      <div class="toc" id="toc">
-        <p class="toc-title">Contents</p>
+      <div class="toc">
+        <p class="toc-title">Contents (Years)</p>
         <div id="tocLinks"></div>
       </div>
     </header>
 
-    <main id="sections"></main>
+    <main id="years"></main>
 
     <footer>
-      <div><strong>Editing tip:</strong> replace the placeholder URL inside <code>makeEntry()</code>, or paste real links into <code>customLinks</code> if you prefer fully manual curation.</div>
+      <div><strong>How to use:</strong> Paste this as <code>index.html</code> in your GitHub Pages repo.</div>
+      <div><strong>How to curate:</strong> Replace the placeholder URL in <code>makeEntry()</code> or add real links in <code>customLinks</code>.</div>
     </footer>
   </div>
 
   <script>
     // ----------------------------
-    // 1) SECTION DIVIDERS / HEADERS
+    // 1) YEAR RANGE (EDITABLE)
     // ----------------------------
-    // You can rename/add/remove sections freely.
-    const sections = [
-      { id: "overview-reference", title: "Overview & Reference", desc: "Finding aids, catalogues, bibliographies, and research gateways." },
-      { id: "early-life", title: "Early Life & Formative Years (1889–1918)", desc: "Family, childhood, schooling, Vienna/Munich years, WWI service." },
-      { id: "postwar-rise", title: "Post-War Radicalisation & Party Rise (1919–1923)", desc: "DAP/NSDAP origins, early speeches, propaganda, networks." },
-      { id: "munich-putsch", title: "Munich Putsch Files (1923–1924)", desc: "Coup attempt materials, arrests, trial records, imprisonment." },
-      { id: "mein-kampf", title: "Landsberg Prison & Mein Kampf (1924–1926)", desc: "Prison period, drafting/publication context, related correspondence." },
-      { id: "rebuild-power", title: "Rebuilding the Movement (1925–1932)", desc: "Electoral strategy, SA/SS evolution, organisational documents." },
-      { id: "seizure-of-power", title: "Seizure of Power & Consolidation (1933–1934)", desc: "Appointments, legal measures, Gleichschaltung, intra-party conflict." },
-      { id: "prewar-years", title: "Hitler Pre-War Years (1935–1938)", desc: "Rearmament, domestic control, diplomacy, key speeches, policy." },
-      { id: "annexations-crisis", title: "Anschluss & Sudeten / Munich Crisis (1938)", desc: "Austria annexation, Sudetenland crisis, Munich Agreement materials." },
-      { id: "war-outbreak", title: "War Outbreak & Early War (1939–1941)", desc: "Poland campaign, Western Europe, early war directives, diplomacy." },
-      { id: "holocaust-persecution", title: "Persecution, Genocide & Occupation Administration", desc: "Documentation about policy, administration, occupied territories, and related records (handled with care; cite responsibly)." },
-      { id: "military-hq", title: "Military Headquarters & Command (Wolf’s Lair, etc.)", desc: "Führerhauptquartier materials, conferences, situation reports, directives." },
-      { id: "war-turning-point", title: "Turning Point & Total War (1942–1944)", desc: "Stalingrad era, home front, strategic shifts, Allied pressures." },
-      { id: "july-plot", title: "20 July Plot & Internal Opposition (1944)", desc: "Assassination attempt, investigations, trials, aftermath." },
-      { id: "final-months", title: "Final Months, Bunker & Death (1945)", desc: "Berlin period, last decrees, testimonies, immediate postwar records." },
-      { id: "postwar-legacy", title: "Post-War Trials, Testimonies & Legacy", desc: "Nuremberg-era materials, witness accounts, historiography debates." },
-      { id: "images-maps-media", title: "Photographs, Film, Audio, Maps & Ephemera", desc: "Media archives, map collections, posters, periodicals, miscellany." }
-    ];
+    const START_YEAR = 1889;
+    const END_YEAR   = 1945;
 
-    // ----------------------------
-    // 2) LINK GENERATION
-    // ----------------------------
-    // Placeholder link builder. Replace with real links as you collect them.
-    function makeEntry(sectionId, i){
-      const tags = [
-        "primary","secondary","archive","catalogue","pdf",
-        "scan","map","speech","trial","photo","memoir","newspaper"
-      ];
-      const tag = tags[(i - 1) % tags.length];
-
-      // Placeholder URL pattern (swap for your real sources later)
-      const url = `https://example.com/${sectionId}/${String(i).padStart(3,"0")}`;
-
-      // Academic-ish title style
-      const title = `${sectionId.replaceAll("-"," ").replace(/\b\w/g, c => c.toUpperCase())} — Entry ${String(i).padStart(3,"0")}`;
-
-      return { sectionId, title, tag, url };
+    // Rough guidance blurbs (optional—edit or delete freely)
+    function yearDesc(y){
+      if (y <= 1913) return "Early life and formative context (family, schooling, Vienna/Munich years).";
+      if (y <= 1918) return "World War I period (service context, contemporaneous materials).";
+      if (y <= 1923) return "Postwar radicalisation and early party rise.";
+      if (y === 1924) return "Trial/imprisonment aftermath; transition period.";
+      if (y <= 1932) return "Movement rebuilding and electoral strategy.";
+      if (y <= 1934) return "Seizure and consolidation of power.";
+      if (y <= 1938) return "Pre-war years; diplomacy and domestic rule.";
+      if (y <= 1941) return "War outbreak and early war period.";
+      if (y <= 1944) return "Later war years; command, conferences, internal dynamics.";
+      return "Final months in 1945; end-of-war documentation.";
     }
 
-    // Entries per section (tweak as you like)
-    const PER_SECTION = 35; // 35 * 15-ish sections ≈ 500+ total
+    // ----------------------------
+    // 2) LINKS (AUTO-GENERATED)
+    // ----------------------------
+    // Entries per year (tune this to get roughly the size you want).
+    // 1889–1945 inclusive = 57 years. 9 entries/year ≈ 513 links.
+    const PER_YEAR = 9;
 
-    // Optional: if you want to hardcode some real links immediately, add them here:
+    const tags = ["primary","secondary","archive","catalogue","pdf","scan","map","speech","trial","photo","memoir","newspaper"];
+
+    function makeEntry(year, i){
+      const tag = tags[(i - 1) % tags.length];
+
+      // Placeholder URL — replace with real sources later.
+      const url = `https://example.com/${year}/${String(i).padStart(2,"0")}`;
+
+      // Academic-ish title style (you will likely rename once you curate)
+      const title = `${year} — Document Entry ${String(i).padStart(2,"0")}`;
+
+      return { year, title, tag, url };
+    }
+
+    // Optional: drop real links in here now (they will be included alongside generated ones)
     // const customLinks = [
-    //   { sectionId:"munich-putsch", title:"Example Real Link Title", tag:"primary", url:"https://..." },
+    //   { year: 1923, title: "Beer Hall Putsch — Trial Record (Example)", tag: "primary", url: "https://..." },
     // ];
     const customLinks = [];
 
-    // Build generated entries
+    const years = Array.from({length: END_YEAR - START_YEAR + 1}, (_,k) => START_YEAR + k);
+
     const generated = [];
-    for (const s of sections){
-      for (let i=1; i<=PER_SECTION; i++){
-        generated.push(makeEntry(s.id, i));
+    for (const y of years){
+      for (let i=1; i<=PER_YEAR; i++){
+        generated.push(makeEntry(y, i));
       }
     }
-
     const entries = [...customLinks, ...generated];
 
     // ----------------------------
     // 3) RENDERING
     // ----------------------------
-    const sectionsEl = document.getElementById("sections");
+    const yearsEl = document.getElementById("years");
     const tocLinksEl = document.getElementById("tocLinks");
     const qEl = document.getElementById("q");
     const countEl = document.getElementById("count");
@@ -190,49 +165,47 @@
     }
 
     function renderTOC(){
-      tocLinksEl.innerHTML = sections.map(s => {
-        return `<div><a href="#${escapeHtml(s.id)}">${escapeHtml(s.title)}</a></div>`;
-      }).join("");
+      tocLinksEl.innerHTML = years.map(y => `<a href="#y${y}">${y}</a>`).join(" · ");
     }
 
     function render(filterText=""){
       const q = filterText.trim().toLowerCase();
 
-      // Group by section
-      const grouped = new Map();
-      for (const s of sections) grouped.set(s.id, []);
-
       const filtered = entries.filter(e => {
         if (!q) return true;
         return (
+          String(e.year).includes(q) ||
           e.title.toLowerCase().includes(q) ||
           e.tag.toLowerCase().includes(q) ||
-          e.url.toLowerCase().includes(q) ||
-          e.sectionId.toLowerCase().includes(q)
+          e.url.toLowerCase().includes(q)
         );
       });
 
+      // group by year
+      const grouped = new Map();
+      for (const y of years) grouped.set(y, []);
       for (const e of filtered){
-        if (!grouped.has(e.sectionId)) grouped.set(e.sectionId, []);
-        grouped.get(e.sectionId).push(e);
+        if (!grouped.has(e.year)) grouped.set(e.year, []);
+        grouped.get(e.year).push(e);
       }
 
-      // Render sections with dividers
-      sectionsEl.innerHTML = sections.map(s => {
-        const items = grouped.get(s.id) || [];
+      yearsEl.innerHTML = years.map(y => {
+        const items = grouped.get(y) || [];
         const listHtml = items.length
-          ? `<div class="grid"><ol>${items.map(e => `
-              <li>
-                <a href="${escapeHtml(e.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.title)}</a>
-                <span class="meta">— ${escapeHtml(e.tag)} — ${escapeHtml(e.url)}</span>
-              </li>
-            `).join("")}</ol></div>`
-          : `<p class="desc">(No entries match the current filter for this section.)</p>`;
+          ? `<div class="grid"><ol>${
+              items.map(e => `
+                <li>
+                  <a href="${escapeHtml(e.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.title)}</a>
+                  <span class="meta">— ${escapeHtml(e.tag)} — ${escapeHtml(e.url)}</span>
+                </li>
+              `).join("")
+            }</ol></div>`
+          : `<p class="desc">(No entries match the current filter for ${y}.)</p>`;
 
         return `
-          <section class="section" id="${escapeHtml(s.id)}">
-            <h2>${escapeHtml(s.title)}</h2>
-            <p class="desc">${escapeHtml(s.desc)}</p>
+          <section class="year" id="y${y}">
+            <h2>${y}</h2>
+            <p class="desc">${escapeHtml(yearDesc(y))}</p>
             ${listHtml}
           </section>
         `;
@@ -243,7 +216,6 @@
 
     renderTOC();
     render();
-
     qEl.addEventListener("input", () => render(qEl.value));
   </script>
 </body>
