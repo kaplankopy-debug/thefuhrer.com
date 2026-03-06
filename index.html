@@ -2,39 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Home</title>
 
   <style>
-    :root {
-      --bg: #000;
-      --text: #fff;
-      --overlay: rgba(0, 0, 0, 0.45);
-      --button-bg: rgba(255, 255, 255, 0.12);
-      --button-border: rgba(255, 255, 255, 0.28);
-      --button-bg-hover: rgba(255, 255, 255, 0.18);
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html,
-    body {
+    html, body {
       width: 100%;
       height: 100%;
-      background: var(--bg);
       overflow: hidden;
+      background: #000;
       font-family: Arial, sans-serif;
     }
 
     body {
       position: relative;
+      background: #000;
     }
 
     .video-wrap {
@@ -43,16 +31,39 @@
       width: 100vw;
       height: 100vh;
       background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
     }
 
     video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      display: block;
       background: #000;
+    }
+
+    /* Desktop: fill screen nicely */
+    @media (min-width: 769px) {
+      video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: contain;
+      }
+    }
+
+    /* Mobile: show full width of the video */
+    @media (max-width: 768px) {
+      .video-wrap {
+        align-items: center;
+        justify-content: center;
+      }
+
+      video {
+        width: 100vw;
+        height: auto;
+        max-height: 100vh;
+        object-fit: contain;
+      }
     }
 
     .overlay {
@@ -62,9 +73,9 @@
       align-items: center;
       justify-content: center;
       padding: 24px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.28));
+      background: rgba(0,0,0,0.18);
       z-index: 10;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
     }
 
     .overlay.hidden {
@@ -74,47 +85,19 @@
     }
 
     .cta {
-      appearance: none;
-      border: 1px solid var(--button-border);
-      background: var(--button-bg);
-      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
       padding: 14px 22px;
       border-radius: 999px;
       font-size: 16px;
-      line-height: 1;
       cursor: pointer;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .cta:hover {
-      background: var(--button-bg-hover);
     }
 
     .cta:active {
       transform: scale(0.98);
-    }
-
-    .fallback-message {
-      position: fixed;
-      left: 50%;
-      bottom: max(18px, env(safe-area-inset-bottom));
-      transform: translateX(-50%);
-      z-index: 11;
-      color: rgba(255,255,255,0.72);
-      font-size: 12px;
-      letter-spacing: 0.02em;
-      text-align: center;
-      padding: 0 14px;
-      pointer-events: none;
-    }
-
-    @media (max-width: 768px) {
-      .cta {
-        font-size: 15px;
-        padding: 13px 20px;
-      }
     }
   </style>
 </head>
@@ -138,72 +121,47 @@
     <button id="soundButton" class="cta" type="button">Tap to play with sound</button>
   </div>
 
-  <div id="fallbackMessage" class="fallback-message" style="display:none;">
-    If sound does not start automatically, tap once anywhere.
-  </div>
-
   <script>
     const video = document.getElementById("bgVideo");
     const overlay = document.getElementById("overlay");
     const soundButton = document.getElementById("soundButton");
-    const fallbackMessage = document.getElementById("fallbackMessage");
 
-    async function tryAutoplayMuted() {
+    async function startMuted() {
       try {
         video.muted = true;
         await video.play();
-      } catch (err) {
-        console.warn("Muted autoplay failed:", err);
+      } catch (e) {
+        console.log("Muted autoplay blocked", e);
       }
     }
 
     async function enableSound() {
       try {
         video.muted = false;
-        video.volume = 1.0;
+        video.volume = 1;
         await video.play();
         overlay.classList.add("hidden");
-        fallbackMessage.style.display = "none";
-      } catch (err) {
-        console.warn("Sound playback blocked:", err);
-        fallbackMessage.style.display = "block";
+      } catch (e) {
+        console.log("Sound start blocked", e);
       }
     }
 
-    // Start muted immediately for best cross-device compatibility
-    tryAutoplayMuted();
+    startMuted();
 
-    // Try once to switch to sound after page load
     window.addEventListener("load", async () => {
       try {
         video.muted = false;
-        video.volume = 1.0;
+        video.volume = 1;
         await video.play();
         overlay.classList.add("hidden");
-      } catch (err) {
-        // Most mobile browsers will land here
+      } catch (e) {
         overlay.classList.remove("hidden");
       }
     });
 
     soundButton.addEventListener("click", enableSound);
-
-    // Allow tap anywhere on overlay to start sound
     overlay.addEventListener("click", (e) => {
       if (e.target !== soundButton) enableSound();
-    });
-
-    // Keep looping cleanly
-    video.addEventListener("ended", () => {
-      video.currentTime = 0;
-      video.play().catch(() => {});
-    });
-
-    // If browser pauses on visibility changes, resume when possible
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) {
-        video.play().catch(() => {});
-      }
     });
   </script>
 </body>
