@@ -1,222 +1,210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chronological Archive Index</title>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <title>Home</title>
+
   <style>
-    :root{
-      --bg:#fffbe6; /* faint yellow */
-      --text:#111;
-      --muted:#666;
-      --border:rgba(0,0,0,0.15);
-      --link:#0b2e7a;
-      --visited:#4b2a7a;
+    :root {
+      --bg: #000;
+      --text: #fff;
+      --overlay: rgba(0, 0, 0, 0.45);
+      --button-bg: rgba(255, 255, 255, 0.12);
+      --button-border: rgba(255, 255, 255, 0.28);
+      --button-bg-hover: rgba(255, 255, 255, 0.18);
     }
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:"Times New Roman", Times, serif;
-      font-size:12px;
-      line-height:1.35;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .wrap{max-width:1200px;margin:0 auto;padding:24px 18px 40px}
-    header{border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px}
-    h1{margin:0 0 6px 0;font-size:16px;font-weight:bold}
-    .subtitle{margin:0;color:var(--muted)}
-    .toolbar{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    input[type="search"]{
-      font-family:inherit;font-size:12px;
-      padding:6px 8px;border:1px solid var(--border);
-      background:rgba(255,255,255,0.65);
-      width:min(560px, 100%);
-      outline:none;
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
-    .count{color:var(--muted)}
-    .toc{
-      margin-top:12px;
-      padding:10px 12px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,0.35);
+
+    body {
+      position: relative;
     }
-    .toc-title{font-weight:bold;margin:0 0 6px 0}
-    .toc a{color:var(--link);text-decoration:none}
-    .toc a:hover{text-decoration:underline}
-    .year{
-      margin-top:18px;
-      padding-top:12px;
-      border-top:1px solid var(--border);
+
+    .video-wrap {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      overflow: hidden;
     }
-    .year h2{margin:0 0 6px 0;font-size:14px;font-weight:bold}
-    .year .desc{margin:0 0 10px 0;color:var(--muted)}
-    .grid{columns:2;column-gap:34px}
-    @media (max-width: 820px){ .grid{columns:1} }
-    ol{margin:0;padding-left:20px}
-    li{break-inside:avoid;padding:2px 0;border-bottom:1px dotted rgba(0,0,0,0.08)}
-    a{color:var(--link);text-decoration:none}
-    a:hover{text-decoration:underline}
-    a:visited{color:var(--visited)}
-    .meta{color:var(--muted);margin-left:6px;font-size:11px}
-    footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted)}
-    code{font-size:11px}
+
+    video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.28));
+      z-index: 10;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .cta {
+      appearance: none;
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
+      color: var(--text);
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .cta:hover {
+      background: var(--button-bg-hover);
+    }
+
+    .cta:active {
+      transform: scale(0.98);
+    }
+
+    .fallback-message {
+      position: fixed;
+      left: 50%;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 11;
+      color: rgba(255,255,255,0.72);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-align: center;
+      padding: 0 14px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .cta {
+        font-size: 15px;
+        padding: 13px 20px;
+      }
+    }
   </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <header>
-      <h1>An archive of historical documents relating to the person of Adolf Hitler</h1>
-      <p class="subtitle">Chronological index (year-by-year). Placeholder links now; replace URLs/titles as you curate.</p>
+  <div class="video-wrap">
+    <video
+      id="bgVideo"
+      playsinline
+      webkit-playsinline
+      autoplay
+      muted
+      loop
+      preload="auto"
+    >
+      <source src="homepage-video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
-      <div class="toolbar">
-        <input id="q" type="search" placeholder="Filter titles/tags/URLs (e.g., 1923, trial, speech, pdf, map)..." />
-        <span class="count" id="count"></span>
-      </div>
+  <div id="overlay" class="overlay">
+    <button id="soundButton" class="cta" type="button">Tap to play with sound</button>
+  </div>
 
-      <div class="toc">
-        <p class="toc-title">Contents (Years)</p>
-        <div id="tocLinks"></div>
-      </div>
-    </header>
-
-    <main id="years"></main>
-
-    <footer>
-      <div><strong>How to use:</strong> Paste this as <code>index.html</code> in your GitHub Pages repo.</div>
-      <div><strong>How to curate:</strong> Replace the placeholder URL in <code>makeEntry()</code> or add real links in <code>customLinks</code>.</div>
-    </footer>
+  <div id="fallbackMessage" class="fallback-message" style="display:none;">
+    If sound does not start automatically, tap once anywhere.
   </div>
 
   <script>
-    // ----------------------------
-    // 1) YEAR RANGE (EDITABLE)
-    // ----------------------------
-    const START_YEAR = 1889;
-    const END_YEAR   = 1945;
+    const video = document.getElementById("bgVideo");
+    const overlay = document.getElementById("overlay");
+    const soundButton = document.getElementById("soundButton");
+    const fallbackMessage = document.getElementById("fallbackMessage");
 
-    // Rough guidance blurbs (optional—edit or delete freely)
-    function yearDesc(y){
-      if (y <= 1913) return "Early life and formative context (family, schooling, Vienna/Munich years).";
-      if (y <= 1918) return "World War I period (service context, contemporaneous materials).";
-      if (y <= 1923) return "Postwar radicalisation and early party rise.";
-      if (y === 1924) return "Trial/imprisonment aftermath; transition period.";
-      if (y <= 1932) return "Movement rebuilding and electoral strategy.";
-      if (y <= 1934) return "Seizure and consolidation of power.";
-      if (y <= 1938) return "Pre-war years; diplomacy and domestic rule.";
-      if (y <= 1941) return "War outbreak and early war period.";
-      if (y <= 1944) return "Later war years; command, conferences, internal dynamics.";
-      return "Final months in 1945; end-of-war documentation.";
-    }
-
-    // ----------------------------
-    // 2) LINKS (AUTO-GENERATED)
-    // ----------------------------
-    // Entries per year (tune this to get roughly the size you want).
-    // 1889–1945 inclusive = 57 years. 9 entries/year ≈ 513 links.
-    const PER_YEAR = 9;
-
-    const tags = ["primary","secondary","archive","catalogue","pdf","scan","map","speech","trial","photo","memoir","newspaper"];
-
-    function makeEntry(year, i){
-      const tag = tags[(i - 1) % tags.length];
-
-      // Placeholder URL — replace with real sources later.
-      const url = `https://example.com/${year}/${String(i).padStart(2,"0")}`;
-
-      // Academic-ish title style (you will likely rename once you curate)
-      const title = `${year} — Document Entry ${String(i).padStart(2,"0")}`;
-
-      return { year, title, tag, url };
-    }
-
-    // Optional: drop real links in here now (they will be included alongside generated ones)
-    // const customLinks = [
-    //   { year: 1923, title: "Beer Hall Putsch — Trial Record (Example)", tag: "primary", url: "https://..." },
-    // ];
-    const customLinks = [];
-
-    const years = Array.from({length: END_YEAR - START_YEAR + 1}, (_,k) => START_YEAR + k);
-
-    const generated = [];
-    for (const y of years){
-      for (let i=1; i<=PER_YEAR; i++){
-        generated.push(makeEntry(y, i));
+    async function tryAutoplayMuted() {
+      try {
+        video.muted = true;
+        await video.play();
+      } catch (err) {
+        console.warn("Muted autoplay failed:", err);
       }
     }
-    const entries = [...customLinks, ...generated];
 
-    // ----------------------------
-    // 3) RENDERING
-    // ----------------------------
-    const yearsEl = document.getElementById("years");
-    const tocLinksEl = document.getElementById("tocLinks");
-    const qEl = document.getElementById("q");
-    const countEl = document.getElementById("count");
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    function renderTOC(){
-      tocLinksEl.innerHTML = years.map(y => `<a href="#y${y}">${y}</a>`).join(" · ");
-    }
-
-    function render(filterText=""){
-      const q = filterText.trim().toLowerCase();
-
-      const filtered = entries.filter(e => {
-        if (!q) return true;
-        return (
-          String(e.year).includes(q) ||
-          e.title.toLowerCase().includes(q) ||
-          e.tag.toLowerCase().includes(q) ||
-          e.url.toLowerCase().includes(q)
-        );
-      });
-
-      // group by year
-      const grouped = new Map();
-      for (const y of years) grouped.set(y, []);
-      for (const e of filtered){
-        if (!grouped.has(e.year)) grouped.set(e.year, []);
-        grouped.get(e.year).push(e);
+    async function enableSound() {
+      try {
+        video.muted = false;
+        video.volume = 1.0;
+        await video.play();
+        overlay.classList.add("hidden");
+        fallbackMessage.style.display = "none";
+      } catch (err) {
+        console.warn("Sound playback blocked:", err);
+        fallbackMessage.style.display = "block";
       }
-
-      yearsEl.innerHTML = years.map(y => {
-        const items = grouped.get(y) || [];
-        const listHtml = items.length
-          ? `<div class="grid"><ol>${
-              items.map(e => `
-                <li>
-                  <a href="${escapeHtml(e.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.title)}</a>
-                  <span class="meta">— ${escapeHtml(e.tag)} — ${escapeHtml(e.url)}</span>
-                </li>
-              `).join("")
-            }</ol></div>`
-          : `<p class="desc">(No entries match the current filter for ${y}.)</p>`;
-
-        return `
-          <section class="year" id="y${y}">
-            <h2>${y}</h2>
-            <p class="desc">${escapeHtml(yearDesc(y))}</p>
-            ${listHtml}
-          </section>
-        `;
-      }).join("");
-
-      countEl.textContent = `${filtered.length} / ${entries.length} shown`;
     }
 
-    renderTOC();
-    render();
-    qEl.addEventListener("input", () => render(qEl.value));
+    // Start muted immediately for best cross-device compatibility
+    tryAutoplayMuted();
+
+    // Try once to switch to sound after page load
+    window.addEventListener("load", async () => {
+      try {
+        video.muted = false;
+        video.volume = 1.0;
+        await video.play();
+        overlay.classList.add("hidden");
+      } catch (err) {
+        // Most mobile browsers will land here
+        overlay.classList.remove("hidden");
+      }
+    });
+
+    soundButton.addEventListener("click", enableSound);
+
+    // Allow tap anywhere on overlay to start sound
+    overlay.addEventListener("click", (e) => {
+      if (e.target !== soundButton) enableSound();
+    });
+
+    // Keep looping cleanly
+    video.addEventListener("ended", () => {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    });
+
+    // If browser pauses on visibility changes, resume when possible
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        video.play().catch(() => {});
+      }
+    });
   </script>
 </body>
 </html>
