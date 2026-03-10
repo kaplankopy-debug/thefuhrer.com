@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>thefuhrer.com</title>
 
   <style>
@@ -44,7 +41,6 @@
       background: #000;
     }
 
-    /* Mobile: show full width of the video */
     @media (max-width: 768px) {
       video {
         width: 100vw;
@@ -54,7 +50,6 @@
       }
     }
 
-    /* Desktop: keep whole video visible */
     @media (min-width: 769px) {
       video {
         width: 100vw;
@@ -105,6 +100,7 @@
       playsinline
       webkit-playsinline
       autoplay
+      muted
       loop
       preload="auto"
     >
@@ -114,7 +110,7 @@
   </div>
 
   <div id="overlay" class="overlay">
-    <button id="soundButton" class="cta" type="button">Tap to play with sound</button>
+    <button id="soundButton" class="cta" type="button">Tap to enable sound</button>
   </div>
 
   <script>
@@ -122,26 +118,12 @@
     const overlay = document.getElementById("overlay");
     const soundButton = document.getElementById("soundButton");
 
-    async function tryStartWithSound() {
-      try {
-        video.muted = false;
-        video.volume = 1;
-        await video.play();
-        overlay.classList.add("hidden");
-        return true;
-      } catch (e) {
-        console.log("Autoplay with sound blocked:", e);
-        return false;
-      }
-    }
-
-    async function startMutedFallback() {
+    async function startVideo() {
       try {
         video.muted = true;
         await video.play();
-        overlay.classList.remove("hidden");
       } catch (e) {
-        console.log("Muted autoplay blocked:", e);
+        console.log("Autoplay failed:", e);
       }
     }
 
@@ -152,24 +134,12 @@
         await video.play();
         overlay.classList.add("hidden");
       } catch (e) {
-        console.log("Manual sound start blocked:", e);
+        console.log("Sound enable failed:", e);
       }
     }
 
-    window.addEventListener("load", async () => {
-      const startedWithSound = await tryStartWithSound();
-      if (!startedWithSound) {
-        await startMutedFallback();
-      }
-    });
-
+    window.addEventListener("load", startVideo);
     soundButton.addEventListener("click", enableSound);
-
-    overlay.addEventListener("click", (e) => {
-      if (e.target !== soundButton) {
-        enableSound();
-      }
-    });
   </script>
 </body>
 </html>
