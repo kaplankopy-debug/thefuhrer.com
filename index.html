@@ -4,516 +4,335 @@
   <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
   />
-  <title>Invasion of Poland (1939)</title>
+  <title>1939 Poland Campaign | thefuhrer.com</title>
+
   <style>
-    :root{
-      --bg:#f5f1e8;
-      --paper:#fcfaf5;
-      --text:#1f1b16;
-      --muted:#6a6258;
-      --border:#d6cec2;
-      --accent:#6f1d1b;
-      --accent-soft:#efe4df;
-      --shadow:0 10px 30px rgba(0,0,0,.08);
-      --max:1200px;
+    :root {
+      --bg: #f4efe8;
+      --card: #f8f4ef;
+      --card-2: #e7dfd6;
+      --text: #231f1b;
+      --muted: #6b625a;
+      --border: #d7cdc2;
+      --accent: #7b1f1f;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      --radius: 28px;
+      --max: 860px;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
       font-family: Georgia, "Times New Roman", serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.6;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    .topbar{
-      background:#181512;
-      color:#f4efe7;
-      border-bottom:1px solid rgba(255,255,255,.08);
+    img {
+      max-width: 100%;
+      display: block;
     }
 
-    .topbar-inner{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:14px 20px;
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:center;
-      flex-wrap:wrap;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .site-title{
-      font-size:14px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      opacity:.9;
+    .page {
+      width: min(100% - 28px, var(--max));
+      margin: 0 auto;
+      padding: 28px 0 56px;
     }
 
-    .site-nav{
-      display:flex;
-      gap:18px;
-      flex-wrap:wrap;
-      font-size:14px;
+    .hero {
+      padding: 10px 4px 22px;
     }
 
-    .hero{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:42px 20px 26px;
+    .eyebrow {
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
     }
 
-    .eyebrow{
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:10px;
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      line-height: 0.95;
+      font-weight: 700;
+      letter-spacing: -0.03em;
     }
 
-    h1{
-      margin:0 0 14px;
-      font-size:clamp(32px, 5vw, 56px);
-      line-height:1.08;
-      font-weight:700;
-      letter-spacing:-.02em;
+    .intro {
+      font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+      color: #2e2823;
+      margin: 0;
+      max-width: 760px;
     }
 
-    .subtitle{
-      max-width:860px;
-      font-size:18px;
-      color:#332d26;
-      margin:0;
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 28px;
     }
 
-    .page{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 20px 48px;
-      display:grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(280px, .9fr);
-      gap:28px;
-      align-items:start;
+    .map-title {
+      margin: 0;
+      padding: 22px 22px 14px;
+      font-size: clamp(1.3rem, 2.7vw, 2rem);
+      line-height: 1.15;
+      font-weight: 500;
     }
 
-    .main-column,
-    .side-column{
-      min-width:0;
+    .map-wrap {
+      background: var(--card-2);
+      padding: 0;
     }
 
-    .card{
-      background:var(--paper);
-      border:1px solid var(--border);
-      border-radius:18px;
-      box-shadow:var(--shadow);
+    .map-wrap img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      background: var(--card-2);
     }
 
-    .map-card{
-      overflow:hidden;
-      margin-bottom:24px;
+    .section {
+      padding: 30px 22px;
     }
 
-    .map-card img{
-      display:block;
-      width:100%;
-      height:auto;
-      background:#ddd3c6;
+    .section + .section {
+      border-top: 1px solid var(--border);
     }
 
-    .caption{
-      padding:14px 18px 18px;
-      font-size:14px;
-      color:var(--muted);
-      border-top:1px solid var(--border);
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 0.95;
+      color: var(--accent);
+      letter-spacing: -0.03em;
     }
 
-    .section{
-      padding:26px;
-      margin-bottom:24px;
+    p {
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
     }
 
-    h2{
-      margin:0 0 14px;
-      font-size:26px;
-      line-height:1.15;
-      color:var(--accent);
+    p:last-child {
+      margin-bottom: 0;
     }
 
-    h3{
-      margin:20px 0 8px;
-      font-size:19px;
-      color:#2f2922;
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 18px;
     }
 
-    p{
-      margin:0 0 14px;
-      font-size:17px;
+    .info-box {
+      background: #f2ebe3;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
     }
 
-    ul{
-      margin:0;
-      padding-left:22px;
+    .info-box h3 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+      color: var(--accent);
     }
 
-    li{
-      margin:0 0 10px;
-      font-size:16px;
+    .info-box p {
+      font-size: 1rem;
+      margin: 0;
     }
 
-    .infobox{
-      position:sticky;
-      top:18px;
-      overflow:hidden;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
     }
 
-    .infobox-header{
-      background:var(--accent);
-      color:#fff8f5;
-      padding:18px 20px;
-      font-size:20px;
-      font-weight:700;
+    .stat {
+      background: #f2ebe3;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
     }
 
-    .facts{
-      padding:6px 20px 18px;
+    .stat-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
     }
 
-    .fact{
-      padding:13px 0;
-      border-bottom:1px solid var(--border);
+    .stat-value {
+      font-size: 1.05rem;
+      line-height: 1.35;
     }
 
-    .fact:last-child{
-      border-bottom:none;
-      padding-bottom:4px;
+    .footer {
+      padding: 28px 4px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
     }
 
-    .fact-label{
-      display:block;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:var(--muted);
-      margin-bottom:4px;
-    }
-
-    .fact-value{
-      font-size:16px;
-      line-height:1.45;
-    }
-
-    .note{
-      margin-top:18px;
-      padding:14px 15px;
-      font-size:14px;
-      color:#4b4339;
-      background:var(--accent-soft);
-      border:1px solid #dcc4b9;
-      border-radius:12px;
-    }
-
-    .timeline{
-      display:grid;
-      gap:14px;
-      margin-top:10px;
-    }
-
-    .timeline-item{
-      padding:16px 16px 14px;
-      border:1px solid var(--border);
-      border-radius:14px;
-      background:#fbf8f2;
-    }
-
-    .timeline-date{
-      display:inline-block;
-      margin-bottom:8px;
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:14px;
-      margin-top:12px;
-    }
-
-    .stat{
-      padding:16px;
-      border:1px solid var(--border);
-      border-radius:14px;
-      background:#fbf8f2;
-    }
-
-    .stat-label{
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    .stat-value{
-      font-size:18px;
-      font-weight:700;
-      line-height:1.2;
-    }
-
-    .footer{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 20px 50px;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    @media (max-width: 920px){
-      .page{
-        grid-template-columns:1fr;
+    @media (min-width: 760px) {
+      .page {
+        width: min(100% - 48px, var(--max));
+        padding-top: 40px;
       }
-      .infobox{
-        position:static;
-      }
-    }
 
-    @media (max-width: 640px){
-      .hero{
-        padding-top:28px;
+      .section {
+        padding: 38px 30px;
       }
-      .section{
-        padding:20px;
+
+      .map-title {
+        padding: 26px 28px 16px;
       }
-      .stats-grid{
-        grid-template-columns:1fr;
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
       }
-      p{
-        font-size:16px;
+
+      .stats {
+        grid-template-columns: repeat(4, 1fr);
       }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="site-title">World War II Campaign Archive</div>
-      <div class="site-nav">
-        <a href="#">Index</a>
-        <a href="#">1939</a>
-        <a href="#">Campaigns</a>
-        <a href="#">Maps</a>
-      </div>
-    </div>
-  </div>
-
-  <header class="hero">
-    <div class="eyebrow">Campaign Page</div>
-    <h1>Invasion of Poland (1939)</h1>
-    <p class="subtitle">
-      The invasion of Poland began on 1 September 1939 and marked the opening major campaign of the Second World War in Europe.
-      German forces attacked from multiple directions, aiming to destroy Polish armies near the frontier before they could fully
-      regroup or establish a prolonged defensive line in the interior.
-    </p>
-  </header>
-
   <main class="page">
-    <div class="main-column">
-      <div class="card map-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Poland1939_en2.svg" alt="Map of the 1939 invasion of Poland" />
-        <div class="caption">
-          Operational map of the September 1939 campaign. Replace this image link with any map you prefer by swapping the
-          <strong>img src</strong> URL in the code.
-        </div>
+    <section class="hero">
+      <div class="eyebrow">Campaign Archive</div>
+      <h1>Poland Campaign, 1939</h1>
+      <p class="intro">
+        Germany’s invasion of Poland began on 1 September 1939 and marked the opening
+        of the European war. German forces attacked from multiple directions, aiming to
+        destroy Polish armies near the frontier before they could regroup or establish a
+        longer defensive line in the interior.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="map-title">Map of the 1939 invasion of Poland</h2>
+      <div class="map-wrap">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/6/66/Invasion_of_Poland-1939.png"
+          alt="Operational map of the 1939 invasion of Poland"
+        />
       </div>
 
-      <section class="card section" id="overview">
+      <div class="section">
         <h2>Overview</h2>
         <p>
-          Germany’s attack on Poland was designed as a rapid, coordinated offensive using armoured formations, motorised units,
-          infantry, artillery, and air power to break Polish resistance quickly. The campaign sought to exploit mobility, local
-          concentration of force, and repeated encirclement of Polish field armies. The invasion also had a decisive diplomatic effect:
-          Britain and France declared war on Germany on 3 September 1939.
+          The campaign combined rapid armoured thrusts, close air support, and
+          coordinated pressure from north, west, and south. The operational aim was
+          to break Polish mobilisation, encircle major field forces, and seize key
+          political and transport centres before an organised long-term resistance
+          could be established.
         </p>
         <p>
-          The Polish armed forces fought a determined defensive campaign but faced severe strategic disadvantages. Germany held
-          numerical and material advantages in many key categories, enjoyed air superiority early in the fighting, and attacked from
-          several axes. Once Soviet forces entered eastern Poland on 17 September 1939, Polish prospects collapsed further. Organized
-          resistance continued into early October, but the campaign was effectively decided by late September.
+          Polish forces fought a determined defence, but they faced severe problems:
+          incomplete mobilisation, vulnerable frontier deployment, weaker air cover,
+          and pressure on multiple axes at once. The Soviet invasion from the east on
+          17 September further destroyed Poland’s strategic position.
         </p>
-      </section>
+      </div>
 
-      <section class="card section" id="resources">
-        <h2>Military Resources Used</h2>
-
-        <h3>German Forces</h3>
-        <ul>
-          <li>About 1.5 million personnel committed to the campaign.</li>
-          <li>Roughly 2,000 to 2,800 tanks and armoured fighting vehicles, depending on how they are counted.</li>
-          <li>Thousands of artillery pieces and extensive motor transport to support rapid operational movement.</li>
-          <li>Large Luftwaffe commitment for close air support, interdiction, reconnaissance, and attacks on infrastructure.</li>
-          <li>Attack launched from Germany proper, East Prussia, and areas linked to Slovakia, creating multiple pressure points.</li>
-        </ul>
-
-        <h3>Polish Forces</h3>
-        <ul>
-          <li>Roughly 1 million mobilised personnel, though full mobilisation was incomplete when the attack began.</li>
-          <li>Much smaller armoured and motorised capacity than Germany.</li>
-          <li>Heavy reliance on infantry formations, horse-drawn transport, and dispersed mobilisation plans.</li>
-          <li>Air force and anti-air resources were limited relative to the scale of the German offensive.</li>
-          <li>Defensive planning was complicated by the need to cover long frontiers and protect key cities and industrial areas.</li>
-        </ul>
-
-        <div class="note">
-          Numbers vary between historians and reference works. The figures above are broad summary estimates, presented for a
-          clean archive-style overview rather than as a definitive order of battle.
-        </div>
-      </section>
-
-      <section class="card section" id="timeline">
-        <h2>Course of the Campaign</h2>
-
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-date">1 September 1939</div>
-            German forces invade Poland from north, west, and south. Air attacks and fast-moving ground offensives aim to disrupt
-            mobilisation and fracture Polish command coherence from the outset.
+      <div class="section">
+        <h2>Operational Design</h2>
+        <div class="grid">
+          <div class="info-box">
+            <h3>Northern Axis</h3>
+            <p>
+              German forces advanced from East Prussia and Pomerania, helping cut the
+              Polish Corridor and link separated fronts.
+            </p>
           </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date">First week of September</div>
-            German armoured and motorised units achieve rapid breakthroughs. Polish forces fight a series of defensive engagements,
-            withdrawals, and local counterattacks while trying to avoid encirclement.
+          <div class="info-box">
+            <h3>Western Axis</h3>
+            <p>
+              The main pressure came from western Germany toward central Poland,
+              targeting communications, transport lines, and major army formations.
+            </p>
           </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date">9–19 September</div>
-            The Battle of the Bzura becomes the largest major Polish counteroffensive of the campaign. Although it temporarily
-            disrupts German operations, it is ultimately contained and defeated.
+          <div class="info-box">
+            <h3>Southern Axis</h3>
+            <p>
+              Attacks from Slovakia and Upper Silesia supported deep penetrations toward
+              Kraków, Lwów, and the Vistula line.
+            </p>
           </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date">17 September 1939</div>
-            Soviet forces enter eastern Poland, destroying any remaining realistic prospect of sustained strategic resistance by the
-            Polish state.
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date">Late September</div>
-            Warsaw comes under intense siege and bombardment. The capital surrenders on 28 September. Major organised resistance
-            continues only in isolated areas.
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-date">Early October 1939</div>
-            Remaining Polish formations capitulate. The campaign ends with Poland partitioned between Germany and the Soviet Union.
+          <div class="info-box">
+            <h3>Encirclement Aim</h3>
+            <p>
+              Rather than merely pushing Polish armies back, the German concept aimed to
+              trap and destroy them in pockets before they could retreat eastward.
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section class="card section" id="outcome">
-        <h2>Outcome</h2>
-
-        <div class="stats-grid">
+      <div class="section">
+        <h2>Key Facts</h2>
+        <div class="stats">
           <div class="stat">
-            <div class="stat-label">Result</div>
-            <div class="stat-value">German and Soviet victory; Poland partitioned</div>
+            <div class="stat-label">Start Date</div>
+            <div class="stat-value">1 September 1939</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Duration</div>
-            <div class="stat-value">1 September – 6 October 1939</div>
+            <div class="stat-label">End Date</div>
+            <div class="stat-value">Early October 1939</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Main Result</div>
+            <div class="stat-value">Defeat and partition of Poland</div>
           </div>
           <div class="stat">
             <div class="stat-label">Strategic Effect</div>
-            <div class="stat-value">Triggered the wider European war</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Operational Pattern</div>
-            <div class="stat-value">Rapid penetration, encirclement, dislocation</div>
-          </div>
-        </div>
-
-        <h3>Immediate Consequences</h3>
-        <ul>
-          <li>Poland was overrun and divided between Germany and the Soviet Union.</li>
-          <li>Britain and France declared war on Germany, transforming the conflict into a major European war.</li>
-          <li>The campaign demonstrated the operational impact of combining armour, air power, artillery, and speed.</li>
-          <li>It also exposed the vulnerability of a state forced to defend long borders without equivalent mobility or air cover.</li>
-        </ul>
-      </section>
-
-      <section class="card section" id="assessment">
-        <h2>Historical Assessment</h2>
-        <p>
-          The 1939 Polish campaign is often treated as the first major demonstration of the style of warfare that would later be
-          associated with early German successes: concentrated force at decisive points, rapid movement, close cooperation between
-          ground and air arms, and relentless efforts to disrupt enemy command and retreat routes. That said, historians also stress
-          that the campaign’s outcome depended on Poland’s exposed geography, incomplete mobilisation, the diplomatic situation, and
-          the subsequent Soviet intervention.
-        </p>
-        <p>
-          In military terms, the invasion showed how quickly a modern campaign could be decided when one side achieved operational
-          superiority in movement, coordination, and air support. In political terms, it destroyed the European balance that had
-          survived the interwar period and began the continental war that would expand into a global conflict.
-        </p>
-      </section>
-    </div>
-
-    <aside class="side-column">
-      <div class="card infobox">
-        <div class="infobox-header">Quick Facts</div>
-        <div class="facts">
-          <div class="fact">
-            <span class="fact-label">Date</span>
-            <div class="fact-value">1 September – 6 October 1939</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">Location</span>
-            <div class="fact-value">Poland</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">Belligerents</span>
-            <div class="fact-value">Germany, Slovakia, Soviet Union vs Poland</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">German Objective</span>
-            <div class="fact-value">Destroy Polish armed resistance quickly and secure decisive political control</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">Polish Objective</span>
-            <div class="fact-value">Delay, defend key centres, preserve forces, and sustain resistance</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">Result</span>
-            <div class="fact-value">Polish defeat and partition of the country</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">Notable Turning Points</span>
-            <div class="fact-value">Rapid frontier breakthroughs, Bzura counterattack, Soviet invasion, fall of Warsaw</div>
-          </div>
-          <div class="fact">
-            <span class="fact-label">Wider Significance</span>
-            <div class="fact-value">Opened World War II in Europe and triggered British and French declarations of war</div>
-          </div>
-          <div class="note">
-            This page is written in a neutral reference style. You can duplicate the layout for France 1940, Barbarossa 1941,
-            Stalingrad 1942–43, Kursk 1943, and so on.
+            <div class="stat-value">European war begins</div>
           </div>
         </div>
       </div>
-    </aside>
-  </main>
 
-  <footer class="footer">
-    Demo page for a campaign archive. Edit the top title, map URL, and fact box to reuse the same template for other operations and battles.
-  </footer>
+      <div class="section">
+        <h2>Outcome</h2>
+        <p>
+          Poland was overrun within weeks, though organised resistance continued in
+          places after the main field campaign had collapsed. The victory demonstrated
+          the effectiveness of concentrated mechanised operations against an opponent
+          that was strategically exposed and not fully mobilised.
+        </p>
+        <p>
+          Politically, the invasion triggered British and French declarations of war
+          against Germany, transforming the conflict from a regional crisis into a
+          general European war.
+        </p>
+      </div>
+    </section>
+
+    <div class="footer">
+      thefuhrer.com
+    </div>
+  </main>
 </body>
 </html>
